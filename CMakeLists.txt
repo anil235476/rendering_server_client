@@ -21,10 +21,7 @@ endif()
 target_include_directories(rendering_server_client PUBLIC 
 	$<BUILD_INTERFACE:${BOOST_LIB}>
 	$<BUILD_INTERFACE:${ABSL_PATH}>
-#	${PROJECT_SOURCE_DIR}/include
-#	"${PROJECT_SOURCE_DIR}/deps/libsdptransform/include"
-	"./../../websocket_client/"
-	"./../../json_parser/"
-	"./../../json_parser/include/"
-	"./../../"
+	$<BUILD_INTERFACE:${SIGNALLER_LIB_PATH}>
+	$<BUILD_INTERFACE:${JSON_INCLUDE}>
+	$<BUILD_INTERFACE:${JSON_LIB_PATH}>
 	)
