@@ -4,6 +4,7 @@
 
 namespace grt {
 	
+	constexpr const char* leave_session_id = "session_leave_req";
 
 	void rendering_server_client::register_function(std::string id, function_callback callback) {
 		//assert(register_functions_.find(id) == register_functions_.end());
@@ -56,6 +57,13 @@ namespace grt {
 			iter->second(type, msg);
 		}
 			break;
+		case message_type::session_leave_req:
+		{
+			auto iter = register_functions_.find(leave_session_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg);
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -105,6 +113,11 @@ namespace grt {
 	}
 	void sender::done(std::string id){
 		server_callback_->unregister_function(id);
+	}
+
+	void sender::register_for_session_leave_msg(
+		function_callback response) {
+		server_callback_->register_function(leave_session_id, response);
 	}
 
 	

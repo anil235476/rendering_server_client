@@ -43,6 +43,7 @@ namespace grt {
 		std::future<bool> sync_connect(std::string address, std::string port);
 		void send_to_renderer(std::string id, std::string message, function_callback response);
 		void done(std::string id);
+		void register_for_session_leave_msg(function_callback response);
 	private:
 		util::func_thread_handler function_thread_;
 		websocket_signaller signaller_;
