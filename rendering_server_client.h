@@ -46,7 +46,7 @@ namespace grt {
 		void register_for_session_leave_msg(function_callback response);
 	private:
 		util::func_thread_handler function_thread_;
-		websocket_signaller signaller_;
+		websocket_signaller_unsecure signaller_;
 		std::shared_ptr< rendering_server_client> server_callback_;
 		bool is_connected_{ false };
 	};
