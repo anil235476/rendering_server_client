@@ -9,6 +9,10 @@
 #include "signaller/websocket_signaller.h"
 constexpr const char* RENDERING_SERVER_IP = "localhost";
 constexpr const char* RENDERING_SERVER_PORT = "8002";
+
+constexpr const char* mic_toggle_id = "mic_toggle";
+constexpr const char* cam_toggle_id = "cam_toggle";
+
 namespace grt {
 
 	using function_callback = std::function<void(message_type, absl::any msg)>;
@@ -44,6 +48,7 @@ namespace grt {
 		void send_to_renderer(std::string id, std::string message, function_callback response);
 		void done(std::string id);
 		void register_for_session_leave_msg(function_callback response);
+		void register_for_message(std::string id, function_callback response);
 	private:
 		util::func_thread_handler function_thread_;
 		websocket_signaller_unsecure signaller_;

@@ -64,6 +64,20 @@ namespace grt {
 			iter->second(type, msg);
 			break;
 		}
+		case message_type::cam_toggle:
+		{
+			auto iter = register_functions_.find(cam_toggle_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg);
+			break;
+		}
+		case message_type::mic_toggle:
+		{
+			auto iter = register_functions_.find(mic_toggle_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg);
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -117,8 +131,13 @@ namespace grt {
 
 	void sender::register_for_session_leave_msg(
 		function_callback response) {
-		server_callback_->register_function(leave_session_id, response);
+		this->register_for_message(leave_session_id, response);
 	}
+
+	void sender::register_for_message(std::string id, function_callback response) {
+		server_callback_->register_function(id, response);
+	}
+
 
 	
 }//namespace grt
