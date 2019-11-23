@@ -12,6 +12,7 @@ constexpr const char* RENDERING_SERVER_PORT = "8002";
 
 constexpr const char* mic_toggle_id = "mic_toggle";
 constexpr const char* cam_toggle_id = "cam_toggle";
+constexpr const char* error_id = "error";
 
 namespace grt {
 

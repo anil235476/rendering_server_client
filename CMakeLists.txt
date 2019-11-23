@@ -25,3 +25,6 @@ target_include_directories(rendering_server_client PUBLIC
 	$<BUILD_INTERFACE:${JSON_INCLUDE}>
 	$<BUILD_INTERFACE:${JSON_LIB_PATH}>
 	)
+
+	target_link_libraries(rendering_server_client PUBLIC 
+	    json_parser)

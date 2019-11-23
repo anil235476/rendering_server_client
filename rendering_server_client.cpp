@@ -32,7 +32,12 @@ namespace grt {
 
 
 	void rendering_server_client::on_error(std::string error) {
-		assert(false);
+		std::cout << "renderering server client on error " << error<<'\n';
+		std::cout << "handle this condition soon\n";
+		//assert(false);
+		auto iter = register_functions_.find(error_id);
+		assert(iter != register_functions_.end());
+		iter->second(message_type::connection_error, error + "rendering server close error");
 	}
 
 	void rendering_server_client::on_close() {
