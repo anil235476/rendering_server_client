@@ -1,12 +1,12 @@
 #ifndef __RENDERING_SERVER_CLIENT_H__
 #define __RENDERING_SERVER_CLIENT_H__
-#include "signaller/signaller.h"
-#include "json_parser/json_parser.h"
+#include "signaller.h"
+#include "json_parser.h"
 #include <functional>
 #include <map>
 #include <future>
-#include "./function_thread_handler/func_thread_handler.h"
-#include "signaller/websocket_signaller.h"
+#include "func_thread_handler.h"
+#include "websocket_signaller.h"
 constexpr const char* RENDERING_SERVER_IP = "localhost";
 constexpr const char* RENDERING_SERVER_PORT = "8002";
 

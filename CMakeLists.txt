@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
 
-set(LIBWEBRTC_INCLUDE_PATH "D:/webrtcBuild/Sept/webrtc_checkout/src")
-set(ABSL_PATH "${LIBWEBRTC_INCLUDE_PATH}/third_party/abseil-cpp")
-set(BOOST_LIB "D:/boost_1_69_0/boost_1_69_0")
 
 add_library(rendering_server_client
 	rendering_server_client.h
@@ -20,14 +17,9 @@ endif()
 
 target_include_directories(rendering_server_client PUBLIC 
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-	$<BUILD_INTERFACE:${SIGNALLER_LIB_PATH}>
-    PRIVATE
-	$<BUILD_INTERFACE:${BOOST_LIB}>
-	$<BUILD_INTERFACE:${ABSL_PATH}>
-	
-	$<BUILD_INTERFACE:${JSON_INCLUDE}>
-	$<BUILD_INTERFACE:${JSON_LIB_PATH}>
 	)
 
 	target_link_libraries(rendering_server_client PUBLIC 
-	    json_parser)
+	    json_parser 
+		func_thread_handler 
+		signaller)
