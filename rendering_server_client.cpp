@@ -37,21 +37,21 @@ namespace grt {
 		//assert(false);
 		auto iter = register_functions_.find(error_id);
 		assert(iter != register_functions_.end());
-		iter->second(message_type::connection_error, error + "rendering server close error");
+		iter->second(message_type::connection_error, error + "rendering server close error", {});
 	}
 
 	void rendering_server_client::on_close() {
 
 	}
 
-	void rendering_server_client::on_message(message_type type, absl::any msg) {
+	void rendering_server_client::on_message(message_type type, absl::any msg, absl::optional<absl::any> unparsed_msg) {
 		switch (type) {
 		case message_type::window_create_res:
 		{
 			const auto res = absl::any_cast<wnd_create_res>(msg);
 			auto iter = register_functions_.find(res.id);
 			assert(iter != register_functions_.end());
-			iter->second(type, msg);
+			iter->second(type, msg, {});
 		}
 			break;
 		case message_type::wnd_close_req_res:
@@ -59,28 +59,28 @@ namespace grt {
 			const auto res = absl::any_cast<std::pair<bool, std::string>>(msg);
 			auto iter = register_functions_.find(res.second);
 			assert(iter != register_functions_.end());
-			iter->second(type, msg);
+			iter->second(type, msg, {});
 		}
 			break;
 		case message_type::session_leave_req:
 		{
 			auto iter = register_functions_.find(leave_session_id);
 			assert(iter != register_functions_.end());
-			iter->second(type, msg);
+			iter->second(type, msg, {});
 			break;
 		}
 		case message_type::cam_toggle:
 		{
 			auto iter = register_functions_.find(cam_toggle_id);
 			assert(iter != register_functions_.end());
-			iter->second(type, msg);
+			iter->second(type, msg, {});
 			break;
 		}
 		case message_type::mic_toggle:
 		{
 			auto iter = register_functions_.find(mic_toggle_id);
 			assert(iter != register_functions_.end());
-			iter->second(type, msg);
+			iter->second(type, msg, {});
 			break;
 		}
 		default:

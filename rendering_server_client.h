@@ -16,7 +16,7 @@ constexpr const char* error_id = "error";
 
 namespace grt {
 
-	using function_callback = std::function<void(message_type, absl::any msg)>;
+	using function_callback = std::function<void(message_type, absl::any msg, absl::optional<json> unparsed_msg)>;
 
 	class rendering_server_client : public signaller_callback , 
 		public parser_callback{
@@ -36,7 +36,7 @@ namespace grt {
 		void on_close() override;
 
 		//parser_callback interface implementation
-		void on_message(message_type, absl::any msg) override;
+		void on_message(message_type, absl::any msg, absl::optional<absl::any> unparsed_msg) override;
 
 	};
 
