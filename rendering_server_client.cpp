@@ -91,9 +91,9 @@ namespace grt {
 
 
 
-	sender::sender() = default;
+	server_sender::server_sender() = default;
 
-	sender::~sender() {
+	server_sender::~server_sender() {
 		if (is_connected_) {
 			signaller_.disconnect();
 		}
@@ -111,7 +111,7 @@ namespace grt {
 	//}
 
 	std::future<bool> 
-		sender::sync_connect(std::string address, std::string port) {
+		server_sender::sync_connect(std::string address, std::string port) {
 		assert(server_callback_.get() == nullptr);
 		server_callback_ = std::make_shared<rendering_server_client>();
 		assert(server_callback_);
@@ -126,23 +126,28 @@ namespace grt {
 		return future;
 	}
 
-	void sender::send_to_renderer(std::string id, std::string message, function_callback response) {
+	void server_sender::send_to_renderer(std::string id, std::string message, function_callback response) {
 		server_callback_->register_function(id, response);
 		function_thread_.dispatch(SENDER_ID, message);
 	}
-	void sender::done(std::string id){
+	void server_sender::done(std::string id){
 		server_callback_->unregister_function(id);
 	}
 
-	void sender::register_for_session_leave_msg(
+	void server_sender::register_for_session_leave_msg(
 		function_callback response) {
 		this->register_for_message(leave_session_id, response);
 	}
 
-	void sender::register_for_message(std::string id, function_callback response) {
+	void server_sender::register_for_message(std::string id, function_callback response) {
 		server_callback_->register_function(id, response);
 	}
 
+
+
+	std::unique_ptr< sender> get_rendering_server_client() {
+		return std::make_unique< server_sender>();
+	}
 
 	
 }//namespace grt

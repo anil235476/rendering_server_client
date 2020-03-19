@@ -42,20 +42,38 @@ namespace grt {
 
 	class sender {
 	public:
-		sender();
-		~sender();
+		
+		virtual ~sender() {}
 		//void connect(std::string address, std::string port);
-		std::future<bool> sync_connect(std::string address, std::string port);
-		void send_to_renderer(std::string id, std::string message, function_callback response);
-		void done(std::string id);
-		void register_for_session_leave_msg(function_callback response);
-		void register_for_message(std::string id, function_callback response);
+		virtual std::future<bool> sync_connect(std::string address, std::string port) = 0;
+		virtual void send_to_renderer(std::string id, std::string message, function_callback response) = 0;
+		virtual void done(std::string id) = 0;
+		virtual void register_for_session_leave_msg(function_callback response) = 0;
+		virtual void register_for_message(std::string id, function_callback response) = 0;
+	
+	};
+
+	class server_sender : public sender {
+	public:
+		server_sender();
+		~server_sender() override;
+		
+		std::future<bool> sync_connect(std::string address, std::string port) override;
+		void send_to_renderer(std::string id, std::string message, function_callback response) override;
+		void done(std::string id) override;
+		void register_for_session_leave_msg(function_callback response) override;
+		void register_for_message(std::string id, function_callback response) override;
 	private:
 		util::func_thread_handler function_thread_;
 		websocket_signaller_unsecure signaller_;
 		std::shared_ptr< rendering_server_client> server_callback_;
 		bool is_connected_{ false };
 	};
+
+	std::unique_ptr< sender> get_rendering_server_client();
+
+
+
 
 }//namespace grt
 
