@@ -70,6 +70,21 @@ namespace grt {
 		bool is_connected_{ false };
 	};
 
+	util::func_thread_handler* get_renderer_function_thread();
+	class local_sender : public sender {
+	public:
+		local_sender();
+		~local_sender();
+		std::future<bool> sync_connect(std::string address, std::string port) override;
+		void send_to_renderer(std::string id, std::string message, function_callback response) override;
+		void done(std::string id) override;
+		void register_for_session_leave_msg(function_callback response) override;
+		void register_for_message(std::string id, function_callback response) override;
+	private:
+		std::shared_ptr< rendering_server_client> server_callback_;
+		util::func_thread_handler* sender_{ get_renderer_function_thread() };
+	};
+
 	std::unique_ptr< sender> get_rendering_server_client();
 
 

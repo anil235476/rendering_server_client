@@ -143,11 +143,59 @@ namespace grt {
 		server_callback_->register_function(id, response);
 	}
 
+	local_sender::local_sender() {
+		server_callback_ = std::make_shared<rendering_server_client>();
+		assert(server_callback_);
+		sender_->register_id(RENDER_CLIENT_ID,
+			[callback = server_callback_.get()](std::string msg) {
+			grt::async_parse_message(msg, callback);
+		});
+	}
+
+	local_sender::~local_sender() {
+		sender_->unregister(RENDER_CLIENT_ID);
+	}
+
+	std::future<bool> local_sender::sync_connect(std::string address, std::string port) {
+		std::promise<bool> connect_event;
+		
+		auto future = connect_event.get_future();
+		connect_event.set_value(true);
+		return future;
+	}
+	
+	void  local_sender::send_to_renderer(std::string id, std::string message, function_callback response) {
+		server_callback_->register_function(id, response);
+		sender_->dispatch(RENDERING_WND_ID, message);
+		
+
+	}
+	
+	void local_sender::done(std::string id) {
+		server_callback_->unregister_function(id);
+	}
+
+	void local_sender::register_for_session_leave_msg(function_callback response) {
+		this->register_for_message(leave_session_id, response);
+	}
+
+	void local_sender::register_for_message(std::string id, function_callback response) {
+		server_callback_->register_function(id, response);
+	}
 
 
 	std::unique_ptr< sender> get_rendering_server_client() {
+#ifdef RENDER_COMM_ON_NETWORK
 		return std::make_unique< server_sender>();
+#else
+		return std::make_unique< local_sender>();
+#endif//
 	}
 
+
+	util::func_thread_handler* get_renderer_function_thread() {
+		static util::func_thread_handler func_handler_;
+		return &func_handler_;
+	}
 	
 }//namespace grt
