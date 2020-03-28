@@ -16,7 +16,7 @@ constexpr const char* error_id = "error";
 
 namespace grt {
 
-	using function_callback = std::function<void(message_type, absl::any msg, absl::optional<json> unparsed_msg)>;
+	using function_callback = std::function<void(message_type, absl::any msg, absl::optional<absl::any> unparsed_msg)>;
 
 	class rendering_server_client : public signaller_callback , 
 		public parser_callback{
