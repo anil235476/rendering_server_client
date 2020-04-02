@@ -83,6 +83,13 @@ namespace grt {
 			iter->second(type, msg, unparsed_msg);
 			break;
 		}
+		case message_type::share_toggle: {
+			auto iter = register_functions_.find(share_toggle_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg, unparsed_msg);
+			break;
+		}
+										 
 		default:
 			assert(false);
 			break;
