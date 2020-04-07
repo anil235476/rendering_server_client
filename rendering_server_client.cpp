@@ -89,7 +89,13 @@ namespace grt {
 			iter->second(type, msg, unparsed_msg);
 			break;
 		}
-										 
+		case message_type::exit:
+		{
+			auto iter = register_functions_.find(error_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg, unparsed_msg);
+			break;
+		}
 		default:
 			assert(false);
 			break;
