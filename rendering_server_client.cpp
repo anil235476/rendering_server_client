@@ -96,6 +96,14 @@ namespace grt {
 			iter->second(type, msg, unparsed_msg);
 			break;
 		}
+		case message_type::conference_button_status:
+		{
+			//todo: above all message type like share toggle, mic toggle, cam toggle should be moved to this message conference_button_status
+			auto iter = register_functions_.find(mic_toggle_id);
+			assert(iter != register_functions_.end());
+			iter->second(type, msg, unparsed_msg);
+			break;
+		}
 		default:
 			assert(false);
 			break;
