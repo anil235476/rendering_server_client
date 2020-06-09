@@ -186,10 +186,11 @@ namespace grt {
 	}
 	
 	void  local_sender::send_to_renderer(std::string id, std::string message, function_callback response) {
-		server_callback_->register_function(id, response);
-		sender_->dispatch(RENDERING_WND_ID, message);
-		
 
+		if (response) {
+			server_callback_->register_function(id, response);
+		}		
+		sender_->dispatch(RENDERING_WND_ID, message);
 	}
 	
 	void local_sender::done(std::string id) {
